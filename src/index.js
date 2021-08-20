@@ -1,17 +1,33 @@
+/* eslint react/jsx-filename-extension: "off" */
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { render } from 'react-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { Provider } from 'react-redux';
 import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+// Redux Store
+import configureStore from './shared/redux/configureStore';
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+// Routes
+import AppRoutes from './routes';
+
+// Configuring Redux Store
+const store = configureStore(window.initialState);
+
+// DOM
+const rootElement = document.getElementById('root');
+
+// App Wrapper
+const renderApp = Component => {
+  render(
+    <Provider store={store}>
+      <Router>
+        <Component />
+      </Router>
+    </Provider>,
+    rootElement
+  );
+};
+
+// Rendering our App
+renderApp(AppRoutes);
